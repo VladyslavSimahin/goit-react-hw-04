@@ -1,14 +1,19 @@
+import { useEffect } from "react";
+import axios from "axios";
 import { ImageCard } from "../ImageCard/ImageCard";
+import css from "./ImageGallary.module.css";
 
-export const ImageGallary = () => {
+export const ImageGallery = ({ items }) => {
   return (
-    <ul>
-      {/* Набір елементів списку із зображеннями */}
-      <li>
-        <div>
-          <ImageCard />
-        </div>
-      </li>
-    </ul>
+    <>
+      {items && items.length > 0 && (
+        <ul className={css.gallery}>
+          {items.map((item) => (
+            <ImageCard key={item.id} item={item} />
+          ))}
+        </ul>
+      )}
+    </>
   );
 };
+export default ImageGallery;

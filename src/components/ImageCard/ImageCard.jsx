@@ -1,7 +1,14 @@
-export const ImageCard = () => {
+import css from "./ImageCard.module.css";
+
+export const ImageCard = ({ item }) => {
   return (
-    <div>
-      <img src="" alt="" />
-    </div>
+    <li className={css.li}>
+      <img
+        className={css.img}
+        src={item.urls.small}
+        alt={item.alt_description}
+      />
+    </li>
   );
 };
+export default ImageCard;
