@@ -1,5 +1,5 @@
 import React from "react";
-
+import css from "./SearchBar.module.css";
 export const SearchBar = ({ onSearch }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,12 +16,15 @@ export const SearchBar = ({ onSearch }) => {
     <header>
       <form onSubmit={handleSubmit}>
         <input
+          className={css.searchinput}
           type="text"
           name="topic"
           autoFocus
           placeholder="Search images and photos"
         />
-        <button type="submit">Search</button>
+        <button type="submit" className={css.searchbutton}>
+          Search
+        </button>
       </form>
     </header>
   );
