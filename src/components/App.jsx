@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { SearchBar } from "./SearchBar/SearchBar";
-import { ImageGallery } from "./ImageGallary/ImageGallary";
+import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { Loader } from "./Loader/Loader";
 import { Error } from "./ErrorMassage/ErrorMassage";
-import { fetchItems } from "./api";
+import axios from "axios";
 import { LoadMore } from "./LoadMoreBtn/LoadMoreBtn";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { OpenModal } from "./ImageModal/ImageModal";
 
 export const App = () => {
@@ -19,37 +19,44 @@ export const App = () => {
   const accessKey = "qtjjq751w9p3YJz69Iq2isXfNtxnbkYar5CNnOgOijs";
 
   useEffect(() => {
-    const webUrl = `https://api.unsplash.com/search/photos?query=${searchTerm}&page=${page}&client_id=${accessKey}`;
-    async function fetchItems() {
+    const fetchItems = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(webUrl);
-        setItems((prevItem) =>
-          page === 1
-            ? response.data.results
-            : [...prevItem, ...response.data.results]
+        const response = await axios.get(
+          "https://api.unsplash.com/search/photos",
+          {
+            params: {
+              query: searchTerm,
+              page: page,
+              per_page: 12,
+            },
+            headers: {
+              Authorization: `Client-ID ${accessKey}`,
+              "Accept-Version": "v1",
+            },
+          }
+        );
+        const results = response.data.results;
+        setItems((prevItems) =>
+          page === 1 ? results : [...prevItems, ...results]
         );
       } catch (error) {
-        setError(error);
+        setError(true);
+        toast.error("Try again later");
       } finally {
         setLoading(false);
       }
-    }
+    };
+
     if (searchTerm) {
       fetchItems();
     }
   }, [searchTerm, page, accessKey]);
 
-  const handleSearch = async (topic) => {
-    setLoading(true);
-    try {
-      const data = await fetchItems(topic, page, accessKey);
-      setItems(data);
-    } catch (error) {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
+  const handleSearch = (topic) => {
+    setSearchTerm(topic);
+    setPage(1);
+    setError(false);
   };
   const morePhoto = () => {
     setPage((prevPage) => {

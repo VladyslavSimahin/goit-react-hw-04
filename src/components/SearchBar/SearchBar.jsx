@@ -1,4 +1,5 @@
 import React from "react";
+import toast, { Toaster } from "react-hot-toast";
 import css from "./SearchBar.module.css";
 export const SearchBar = ({ onSearch }) => {
   const handleSubmit = (e) => {
@@ -6,7 +7,7 @@ export const SearchBar = ({ onSearch }) => {
     const form = e.target;
     const topic = form.elements.topic.value;
     if (topic.trim() === "") {
-      alert("Please check search form and tap Enter");
+      toast("Please check search form and tap Enter");
       return;
     }
     onSearch(topic);
@@ -15,6 +16,7 @@ export const SearchBar = ({ onSearch }) => {
   return (
     <header>
       <form onSubmit={handleSubmit}>
+        <Toaster />
         <input
           className={css.searchinput}
           type="text"

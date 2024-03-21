@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import axios from "axios";
 import { ImageCard } from "../ImageCard/ImageCard";
 import css from "./ImageGallary.module.css";
 
